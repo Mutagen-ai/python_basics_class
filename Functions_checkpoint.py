@@ -1,4 +1,4 @@
-#Creatinhg a simple python calculator
+#Creating a simple python calculator
 def calculator():
     num1 = float(input("Enter first number:"))
     operator = input("Enter operator (+, -, *, /):")
