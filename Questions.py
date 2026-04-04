@@ -8,7 +8,7 @@ else:
 
 #Simple calculator
 num1= float(input("Enter first number:"))
-operator = input("Enter operator +, -, *, /")
+operator = input("Enter operator (+, -, *, /):")
 num2 = float(input("Enter second number"))
 if operator == "+":
     print(num1 + num2)
@@ -166,4 +166,64 @@ elif marks >= 50:
 else:
     print("Grade: Fail")
     
+#33 Loop through a list and print numbers and its square
+numbers = [1, 2, 3, 4, 5, 6, 7]
+for number in numbers:
+    print("Number:", number, "Square:", number * number)
 
+#34 Filter Even Numbers from a list
+numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+even_numbers = []
+for number in numbers:
+    if number % 2 == 0:
+        even_numbers.append(number)
+
+print(even_numbers)
+
+#35 Sum of list using loop
+numbers = [10, 20, 30, 40, 50]
+total = 0
+for number in numbers:
+    total = total + number
+print("Total sum:", total)
+
+#36 Loop through dictionary
+students = {
+    "Elizabeth": 85,
+    "Tony": 92,
+    "Carol": 78,
+    "David": 65
+    }
+for name, score in students.items():
+    print("Name", name, "Score", score)
+
+#37 Find the highest value in dictionary
+prices = {
+    "laptop": 1200,
+    "phone": 800,
+    "tablet": 950,
+    "headphones": 300
+}
+highest_item = ""
+highest_price = 0
+for item, price in prices.items():
+    if price > highest_price:
+        highest_price = price
+        highest_item = item
+print("The most expensive item:", highest_item)
+print("Price:", highest_price)
+
+#38 Count frequency of items in a list
+numbers = [1, 2, 2, 3, 1, 2]
+frequency = {}
+for number in numbers:
+    if number in frequency:
+        frequency[number] = frequency[number] + 1
+    else:
+        frequency[number] = 1
+print(frequency)
+
+#Loop through a set and for each number print number and its double
+numbers = {1, 2, 3, 4, 5, 6, 7, 8}
+for number in numbers:
+    print("Number:", number, "Double:", number * 2)
