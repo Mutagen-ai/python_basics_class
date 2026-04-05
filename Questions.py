@@ -223,7 +223,53 @@ for number in numbers:
         frequency[number] = 1
 print(frequency)
 
-#Loop through a set and for each number print number and its double
+#39 Loop through a set and for each number print number and its double
 numbers = {1, 2, 3, 4, 5, 6, 7, 8}
 for number in numbers:
     print("Number:", number, "Double:", number * 2)
+    
+#40 Nested Loop with list
+the_matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+for row in the_matrix:
+    for item in row:
+        print(item)
+        
+#41 Lambda: Square a number
+square = lambda x: x * x #noqa: E731
+print(square(3))
+print(square(5))
+print(square(8))
+
+#42 Lambda even or odd
+check = lambda x: "Even" if x % 2 == 0 else "odd" #noqa:E731
+print(check(6))
+print(check(5))
+
+#43 Map: Square list values
+the_list = [1, 2, 3, 4, 5, 6, 7]
+squared_list = list(map(lambda x: x * x, the_list))
+print(squared_list)
+    
+#44 Map: Convert to uppercase
+names = ["mary", "tony", "elizabeth", "bob", "sharon", "elvis"]
+uppercase = list(map(lambda name: name.upper(), names))
+print(uppercase)
+
+#45 Map: Add two lists
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+added_list = list(map(lambda x, y: x + y, list1, list2))
+print(added_list)
+
+#46 Map: Increase Prices
+prices = [50, 150, 500, 300, 250]
+increased_prices = list(map(lambda prices: prices * 1.10, prices))
+
+#47 Combine map and logic
+original_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+final_list = list(map(lambda number: number * number if number % 2 == 0 else number * number * number, original_list))
+print(final_list)
