@@ -1,169 +1,144 @@
-#1 Even or odd checker
-import random
-number = int(input("Enter number:"))
-if number % 2 == 0:
-    print("Even")
-else:
-    print("Odd")
+#Creating a Bank Account
+# ============================================================
 
-#Simple calculator
-num1= float(input("Enter first number:"))
-operator = input("Enter operator +, -, *, /")
-num2 = float(input("Enter second number"))
-if operator == "+":
-    print(num1 + num2)
-elif operator == "-":
-    print(num1 - num2)
-elif operator == "*":
-    print(num1 * num2)
-elif operator == "/":
-    if num2 == 0:
-        print("Cannot divide by zero")
-    else:
-        print(num1 / num2)
-else:
-    print("Invalid operator")
-    
-#Positive, negative or zero
-number = float(input("Enter number:"))
-if number > 0:
-    print("The number is positive")
-elif number < 0:
-    print("The number is negative")
-else:
-    print("The number is zero")
-    
-    
-#Number guessing game
+class Account:
+    """
+    Represents a bank account with deposit, withdraw,
+    and balance-checking functionality.
+    """
 
+    def __init__(self, account_number: str, account_holder: str, account_balance: float = 0.0):
+        """
+        Constructor — runs when you create a new Account object.
 
-secret_number = random.randint(1, 10)
-print("Welcome to the guess the number game!")
-print("I'm thinking of a number between 1 and 10. Can you guess what it is?")
+        Parameters:
+            account_number  (str)   : e.g. "ACC-001"
+            account_holder  (str)   : e.g. "Alice Kamau"
+            account_balance (float) : starting balance, defaults to 0.0
+        """
+        self.account_number  = account_number
+        self.account_holder  = account_holder
+        self.account_balance = account_balance
 
-while True:
-    guess = int(input("Enter your guess: "))
+    # ----------------------------------------------------------
+    # METHOD 1 — deposit
+    # ----------------------------------------------------------
+    def deposit(self, amount: float):
+        """
+        Adds 'amount' to the account balance.
+        Only accepts positive amounts.
+        """
+        if amount <= 0:
+            print("Deposit amount must be greater than zero.")
+            return
 
-    if guess == secret_number:
-        print("Congratulations! You guessed the number correctly")
-        break
-    elif guess > secret_number:
-        print("Your guess is too high. Guess again.")
-    else:
-        print("Your guess is too low. Guess again.")
-        
-        
-#Print numbers 1-5
-n = int(input("Enter a number: "))
+        self.account_balance += amount
+        print(f"Deposited KES {amount:,.2f}. "
+              f"New balance: KES {self.account_balance:,.2f}")
 
-for i in range(1, n + 1):
-    print(i)
-    
-    
-# 6
-n = int(input("Enter a number: "))
+    # ----------------------------------------------------------
+    # METHOD 2 — withdraw
+    # ----------------------------------------------------------
+    def withdraw(self, amount: float):
+        """
+        Subtracts 'amount' from the account balance,
+        BUT only if the balance is >= the amount.
+        """
+        if amount <= 0:
+            print("Withdrawal amount must be greater than zero.")
+            return
 
-total = 0
+        if self.account_balance >= amount:
+            self.account_balance -= amount
+            print(f"Withdrew KES {amount:,.2f}. "
+                  f"New balance: KES {self.account_balance:,.2f}")
+        else:
+            print(f"Insufficient funds! "
+                  f"Balance is KES {self.account_balance:,.2f}, "
+                  f"but you tried to withdraw KES {amount:,.2f}.")
 
-for i in range(1, n + 1):
-    total = total + i
+    # ----------------------------------------------------------
+    # METHOD 3 — check_balance
+    # ----------------------------------------------------------
+    def check_balance(self) -> float:
+        """
+        Returns the current account balance and prints it.
+        """
+        print(f"Account [{self.account_number}] — {self.account_holder}: "
+              f"KES {self.account_balance:,.2f}")
+        return self.account_balance
 
-print("Sum:", total)
-
-
-# 7
-text = input("Enter a string: ")
-
-vowels = "aeiou"
-count = 0
-
-for letter in text.lower():
-    if letter in vowels:
-        count = count + 1
-
-print("Number of vowels:", count)
+    # ----------------------------------------------------------
+    # __str__ — nice string representation of the object
+    # ----------------------------------------------------------
+    def __str__(self):
+        return (f"Account({self.account_number}, "
+                f"Holder: {self.account_holder}, "
+                f"Balance: KES {self.account_balance:,.2f})")
 
 
-#8
-correct_password = "python123"
+# ==============================================================
+# STEP 5 — Create an instance called "my_account"
+# ==============================================================
 
-while True:
-    password = input("Enter the password: ")
+print("=" * 55)
+print("  STEP 5: Creating my_account")
+print("=" * 55)
 
-    if password == correct_password:
-        print("Access granted!")
-        break
-    else:
-        print("Wrong password. Try again.")
-        
+my_account = Account(
+    account_number  = "ACC-001",
+    account_holder  = "Alice Kamau",
+    account_balance = 1000.00      # starting balance
+)
 
-#9
-numbers = [10, 20, 30, 40, 50]
-
-total = 0
-
-for number in numbers:
-    total = total + number
-
-average = total / len(numbers)
-
-print("Sum:", total)
-print("Average:", average)
-
-#10
-fruits = ["apple", "banana", "cherry", "mango", "orange"]
-
-for fruit in fruits:
-    print(fruit)
-    
-#11
-prices = []
-
-for i in range(5):
-    price = float(input(f"Enter price of item {i + 1}: "))
-    prices.append(price)
-
-total = 0
-
-for price in prices:
-    total = total + price
-
-print("Total cost:", total)
-
-#12
-for number in range(1, 51):
-    if number % 3 == 0 and number % 5 == 0:
-        print("FizzBuzz")
-    elif number % 3 == 0:
-        print("Fizz")
-    elif number % 5 == 0:
-        print("Buzz")
-    else:
-        print(number)
-        
-#13
-text = input("Enter a string: ")
-
-reversed_text = ""
-
-for letter in text:
-    reversed_text = letter + reversed_text
-
-print("Reversed:", reversed_text)
+print(my_account)   # uses __str__
 
 
-#14
-marks = float(input("Enter student marks: "))
+# ==============================================================
+# STEP 6 — Use the methods: deposit, withdraw, check_balance
+# ==============================================================
 
-if marks >= 80:
-    print("Grade: A")
-elif marks >= 70:
-    print("Grade: B")
-elif marks >= 60:
-    print("Grade: C")
-elif marks >= 50:
-    print("Grade: D")
-else:
-    print("Grade: Fail")
-    
+print("\n" + "=" * 55)
+print("  STEP 6: Using deposit, withdraw & check_balance")
+print("=" * 55)
 
+my_account.deposit(500)          
+my_account.deposit(250.50)        
+my_account.withdraw(200)          
+my_account.withdraw(5000)         
+my_account.withdraw(-100)         
+my_account.check_balance()       
+
+
+# ==============================================================
+# STEP 7 — Multiple instances, different transactions
+# ==============================================================
+
+print("\n" + "=" * 55)
+print("  STEP 7: Multiple Account Instances")
+print("=" * 55)
+
+# Account 2 — Bob
+acc2 = Account("ACC-002", "Bob Otieno", 5000.00)
+print(f"\n{acc2}")
+acc2.deposit(2000)
+acc2.withdraw(1500)
+acc2.check_balance()
+
+# Account 3 — Carol (starts with zero balance)
+acc3 = Account("ACC-003", "Carol Wanjiku")
+print(f"\n{acc3}")
+acc3.deposit(100)
+acc3.withdraw(150)       
+acc3.withdraw(50)        
+acc3.check_balance()
+
+# Account 4 — David (edge case: withdraw exact balance)
+acc4 = Account("ACC-004", "David Mwangi", 300.00)
+print(f"\n{acc4}")
+acc4.withdraw(300)       
+acc4.check_balance()     
+
+print("\n" + "=" * 55)
+print("  All tests complete!")
+print("=" * 55)
