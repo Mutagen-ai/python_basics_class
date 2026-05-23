@@ -1,72 +1,49 @@
-#Numpy Essentials
-import numpy as np
+#Web Scraping
+#1
+import requests
+from bs4 import BeautifulSoup
 
-# 1. Create the grades array
-grades = np.array([85, 90, 88, 92, 95, 80, 75, 98, 89, 83])
+def get_html(url):
+    headers = {"User-Agent": "Mozilla/5.0 (WikiScraper/1.0; educational)"}
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, "html.parser")
+    return soup
 
-print("=" * 50)
-print("       STUDENT GRADES ANALYSIS REPORT")
-print("=" * 50)
-print(f"\nOriginal Grades: {grades}")
+#2
+def get_title(soup):
+    title_tag = soup.find("h1", id = "firstHeading")
+    return title_tag.get_text(strip= True) if title_tag else "Title not found"
 
-# 2. Statistical measures
-mean   = np.mean(grades)
-median = np.median(grades)
-std    = np.std(grades)
+#3
+def get_article_text(soup):
+    content_div = soup.find("div", id ="mw-content-text")
+    sections = {}
+    current_heading = "Introduction"
 
-print("\n--- Statistical Measures ---")
-print(f"  Mean:               {mean:.2f}")
-print(f"  Median:             {median:.2f}")
-print(f"  Standard Deviation: {std:.2f}")
+    for tag in content_div.find_all(["h2", "h3", "p"]):
+        if tag.name in ("h2", "h3"):
+            current_heading = tag.get_text(strip = True).replace("[edit]", "").strip()
+            sections.setdefault(current_heading, [])
+        elif tag.name == "p":
+            text = tag.get_text(strip = True)
+            if text:
+                sections.setdefault(current_heading, []).append(text)
+    return sections
 
-# 3. Maximum and minimum
-max_grade = np.max(grades)
-min_grade = np.min(grades)
+#4
+def get_internal_links(soup):
+    links = set()
+    for a_tag in soup.find_all("a", href = True):
+        href = a_tag["href"]
+        if href.startswith("/wiki/") and ":" not in href:
+            links.add("https://en.wikipedia.org" + href)
+    return sorted(links)
 
-print("\n--- Max & Min ---")
-print(f"  Maximum Grade: {max_grade}")
-print(f"  Minimum Grade: {min_grade}")
-
-# 4. Sorted grades
-sorted_grades = np.sort(grades)
-print("\n--- Sorted Grades (Ascending) ---")
-print(f"  {sorted_grades}")
-
-# 5. Index of the highest grade
-highest_index = np.argmax(grades)
-print("\n--- Highest Grade ---")
-print(f"  Index of Highest Grade: {highest_index} (Grade: {grades[highest_index]})")
-
-# 6. Count students who scored above 90
-count_above_90 = np.sum(grades > 90)
-print("\n--- Students Scoring Above 90 ---")
-print(f"  Count: {count_above_90}")
-
-# 7. Percentage of students who scored above 90
-pct_above_90 = np.mean(grades > 90) * 100
-print(f"  Percentage: {pct_above_90:.1f}%")
-
-# 8. Percentage of students who scored below 75
-pct_below_75 = np.mean(grades < 75) * 100
-print("\n--- Students Scoring Below 75 ---")
-print(f"  Percentage: {pct_below_75:.1f}%")
-
-# 9. Extract grades above 90 → high_performers
-high_performers = grades[grades > 90]
-print("\n--- High Performers (Grade > 90) ---")
-print(f"  Grades: {high_performers}")
-
-# 10. Extract grades above 75 → passing_grades
-passing_grades = grades[grades > 75]
-print("\n--- Passing Grades (Grade > 75) ---")
-print(f"  Grades: {passing_grades}")
-
-print("\n" + "=" * 50)
-print("              SUMMARY")
-print("=" * 50)
-print(f"  Total Students:        {len(grades)}")
-print(f"  Passing Students:      {len(passing_grades)}")
-print(f"  High Performers:       {len(high_performers)}")
-print(f"  Class Average:         {mean:.2f}")
-print(f"  Grade Range:           {min_grade} - {max_grade}")
-print("=" * 50)
+#5
+def scrape_wikipedia(url):
+    soup     = get_html(url)
+    title    = get_title(soup)
+    sections = get_article_text(soup)
+    links    = get_internal_links(soup)
+    return {"title": title, "sections": sections, "links": links}
